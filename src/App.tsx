@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { RootState, RootAction } from './redux/create';
+import React, { useEffect, useState } from "react";
+import { RootState, RootAction } from "./redux/create";
 import {
   removeWidget,
   createWidget,
@@ -13,7 +13,7 @@ const mapStateToProps = (state: RootState) => ({
   widgets: state.widgets.widgets
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => 
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
   bindActionCreators(
     {
       startWidgetLoad,
@@ -24,26 +24,27 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
     dispatch
   );
 
-  type AppProps = ReturnType<typeof mapStateToProps> &
-    ReturnType<typeof mapDispatchToProps>;
+type AppProps = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps>;
 
-  const App: React.FC<AppProps> = ({
-    widgets,
-    startWidgetLoad,
-    removeWidget,
-    createWidget,
-    updateWidget
-  }) => {
-    const [newWidgetName, setNewWidgetName] = useState("");
-    const [selectedWidget, setSelectedWidget ] = useState<typeof widgets[0]>(
-      widgets[0]
-    );
-    const [formMode, setFormMode] = useState<"create" | "edit">("create");
+const App: React.FC<AppProps> = ({
+  widgets,
+  startWidgetLoad,
+  removeWidget,
+  createWidget,
+  updateWidget
+}) => {
+  const [newWidgetName, setNewWidgetName] = useState("");
+  const [selectedWidget, setSelectedWidget] = useState<typeof widgets[0]>(
+    widgets[0]
+  );
+  const [formMode, setFormMode] = useState<"create" | "edit">("create");
 
-    useEffect(() => {
-      startWidgetLoad();
-    }, [startWidgetLoad]);
-    
+  useEffect(() => {
+    startWidgetLoad();
+  }, [startWidgetLoad]);
+
+  return (
     <React.Fragment>
       <h1>Widgets:</h1>
       <ul>
@@ -51,22 +52,22 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
           <li key={widget}>
             {widget}{" "}
             <button
-              onClick={() =>{
+              onClick={() => {
                 setFormMode("edit");
                 setSelectedWidget(widget);
                 setNewWidgetName(widget);
               }}
-              >
-                Edit Widget
-              </button>
-              <button
-              onClick={() =>{
+            >
+              Edit Widget
+            </button>
+            <button
+              onClick={() => {
                 removeWidget(widget);
                 setFormMode("create");
               }}
-              >
-                Remove Widget
-              </button>
+            >
+              Remove Widget
+            </button>
           </li>
         ))}
       </ul>
@@ -80,27 +81,27 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
           type="textbox"
           value={newWidgetName}
           onChange={e => setNewWidgetName(e.target.value)}
-          />
-          <button
-            onClick={e => {
-              if (formMode === "create") {
-                createWidget(newWidgetName);
-              } else {
-                updateWidget(selectedWidget ,newWidgetName);
-                setFormMode("create");
-              }
-              setNewWidgetName("");
-              e.preventDefault();
-            }}
-            >
-              {formMode === "create" ? "+ Create" : "Update"} Widget
-            </button>
+        />
+        <button
+          onClick={e => {
+            if (formMode === "create") {
+              createWidget(newWidgetName);
+            } else {
+              updateWidget(selectedWidget, newWidgetName);
+              setFormMode("create");
+            }
+            setNewWidgetName("");
+            e.preventDefault();
+          }}
+        >
+          {formMode === "create" ? "+ Create" : "Update"} Widget
+        </button>
       </form>
     </React.Fragment>
+  );
+};
 
-  }
-
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
