@@ -9,6 +9,6 @@ const rootReducer = combineReducers({
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
 
-export type RootAction = widgetAction;
+export type RootAction = WidgetAction;
 export type Store = StateType<typeof store>;
 export type RootState = StateType<ReturnType<typeof rootReducer>>;
